@@ -42,7 +42,7 @@ dependencies {
     implementation(libs.lifecycle.livedata.ktx)
     implementation(libs.lifecycle.viewmodel.ktx)
     implementation(libs.navigation.fragment)
-    implementation("com.google.android.material:material:1.12.0") // ✅ Material 3
+    implementation("com.google.android.material:material:1.12.0") // ✅ Material 
     implementation(libs.navigation.ui)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
