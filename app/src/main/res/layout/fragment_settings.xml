@@ -8,6 +8,7 @@
     android:padding="24dp"
     tools:context=".ui.settings.SettingsFragment">
 
+    <!-- TextInputLayout using Material3 OutlinedBox -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutName"
         style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
@@ -23,6 +24,7 @@
             android:inputType="textPersonName" />
     </com.google.android.material.textfield.TextInputLayout>
 
+    <!-- Save button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSaveName"
         style="@style/Widget.Material3.Button.ElevatedButton"
