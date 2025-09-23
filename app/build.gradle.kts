@@ -4,12 +4,12 @@ plugins {
 
 android {
     namespace = "com.mario.it"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.mario.it"
         minSdk = 24
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
