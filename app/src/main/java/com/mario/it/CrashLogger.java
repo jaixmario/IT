@@ -1,9 +1,6 @@
 package com.mario.it;
 
 import android.content.Context;
-import android.util.Log;
-import android.widget.Toast;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -13,32 +10,31 @@ public class CrashLogger implements Thread.UncaughtExceptionHandler {
     private final Context context;
     private final Thread.UncaughtExceptionHandler defaultHandler;
 
-    public CrashLogger(Context context) {
-        this.context = context.getApplicationContext();
+    public CrashLogger(Context ctx) {
+        this.context = ctx.getApplicationContext();
         this.defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
     }
 
     @Override
-    public void uncaughtException(Thread t, Throwable e) {
+    public void uncaughtException(Thread thread, Throwable throwable) {
         try {
-            // Save crash log to internal storage
-            File logFile = new File(context.getFilesDir(), "crash_log.txt");
-            FileWriter writer = new FileWriter(logFile, true);
-            PrintWriter pw = new PrintWriter(writer);
-            pw.println("---- Crash ----");
-            e.printStackTrace(pw);
-            pw.close();
-
-            Log.e("CrashLogger", "Crash captured: " + e.getMessage(), e);
-            Toast.makeText(context, "App crashed! Log saved at: " + logFile.getAbsolutePath(),
-                    Toast.LENGTH_LONG).show();
-        } catch (Exception ex) {
-            Log.e("CrashLogger", "Error writing crash log", ex);
+            // Save to external files directory (visible in file manager)
+            File logFile = new File(context.getExternalFilesDir(null), "crash_log.txt");
+            PrintWriter writer = new PrintWriter(new FileWriter(logFile, true));
+            writer.println("=== Crash at " + System.currentTimeMillis() + " ===");
+            throwable.printStackTrace(writer);
+            writer.println();
+            writer.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        // Let the default handler continue (system crash dialog)
+        // Give system default handler a chance (optional)
         if (defaultHandler != null) {
-            defaultHandler.uncaughtException(t, e);
+            defaultHandler.uncaughtException(thread, throwable);
+        } else {
+            android.os.Process.killProcess(android.os.Process.myPid());
+            System.exit(1);
         }
     }
 }
