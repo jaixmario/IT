@@ -10,13 +10,13 @@
         android:id="@+id/editName"
         android:hint="Enter your name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/btnSave"
-        android:text="Save & Continue"
+        android:text="Save &amp; Continue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="16dp" />
 
 </LinearLayout>
