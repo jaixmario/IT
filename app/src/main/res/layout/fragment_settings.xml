@@ -8,10 +8,10 @@
     android:padding="24dp"
     tools:context=".ui.settings.SettingsFragment">
 
-    <!-- TextInputLayout using Material3 OutlinedBox -->
+    <!-- TextInputLayout using MaterialComponents OutlinedBox -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutName"
-        style="@style/Widget.Material3.TextInputLayout.OutlinedBox"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Enter your name"
@@ -27,7 +27,7 @@
     <!-- Save button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSaveName"
-        style="@style/Widget.Material3.Button.ElevatedButton"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Save Name"
