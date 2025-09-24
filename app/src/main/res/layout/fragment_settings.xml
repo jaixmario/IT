@@ -8,7 +8,7 @@
     android:padding="24dp"
     tools:context=".ui.settings.SettingsFragment">
 
-    <!-- TextInputLayout using MaterialComponents OutlinedBox -->
+    <!-- Name input -->
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/textInputLayoutName"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -32,5 +32,22 @@
         android:layout_height="wrap_content"
         android:text="Save Name"
         android:layout_marginTop="16dp" />
+
+    <!-- Firebase Versions -->
+    <TextView
+        android:id="@+id/txtAppVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="App Version: -"
+        android:textSize="16sp"
+        android:layout_marginTop="24dp" />
+
+    <TextView
+        android:id="@+id/txtDbVersion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Database Version: -"
+        android:textSize="16sp"
+        android:layout_marginTop="8dp" />
 
 </LinearLayout>
