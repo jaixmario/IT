@@ -12,7 +12,7 @@ public class SettingsViewModel extends ViewModel {
         mText = new MutableLiveData<>();
         mText.setValue("Settings");
     }
-
+//ok
     public LiveData<String> getText() {
         return mText;
     }
