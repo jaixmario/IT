@@ -133,11 +133,13 @@ public class SettingsFragment extends Fragment {
 
     private void logErrorToFile(String message) {
         try {
-            File logDir = requireContext().getFilesDir(); // same internal storage folder
-            File logFile = new File(logDir, "firebase_errors.log");
+            // Save to external files dir (same place as crash logger)
+            File logFile = new File(requireContext().getExternalFilesDir(null), "firebase_errors.log");
             FileWriter writer = new FileWriter(logFile, true);
-            writer.append(System.currentTimeMillis() + " : " + message + "\n");
+            writer.append("=== Firebase Log at " + System.currentTimeMillis() + " ===\n");
+            writer.append(message).append("\n\n");
             writer.close();
+
             Log.d(TAG, "Logged to file: " + logFile.getAbsolutePath());
         } catch (IOException e) {
             Log.e(TAG, "Failed to log error to file", e);
