@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,10 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.mario.it.databinding.FragmentSettingsBinding;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+
 public class SettingsFragment extends Fragment {
 
     private FragmentSettingsBinding binding;
@@ -33,6 +38,8 @@ public class SettingsFragment extends Fragment {
     private TextInputEditText nameEditText;
     private MaterialButton saveBtn;
     private TextView txtAppVersion, txtDbVersion;
+
+    private static final String TAG = "SettingsFragment";
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -83,13 +90,21 @@ public class SettingsFragment extends Fragment {
         rootRef.child("app").child("version").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String version = snapshot.getValue(String.class);
-                txtAppVersion.setText("App Version: " + version);
+                if (snapshot.exists()) {
+                    String version = snapshot.getValue(String.class);
+                    txtAppVersion.setText("App Version: " + version);
+                    Log.d(TAG, "App version loaded: " + version);
+                } else {
+                    txtAppVersion.setText("App Version: not found");
+                    logErrorToFile("App version node not found in DB");
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 txtAppVersion.setText("App Version: Error");
+                logErrorToFile("Failed to load app version: " + error.getMessage());
+                Log.e(TAG, "Failed to load app version", error.toException());
             }
         });
 
@@ -97,15 +112,36 @@ public class SettingsFragment extends Fragment {
         rootRef.child("database").child("version").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                String version = snapshot.getValue(String.class);
-                txtDbVersion.setText("Database Version: " + version);
+                if (snapshot.exists()) {
+                    String version = snapshot.getValue(String.class);
+                    txtDbVersion.setText("Database Version: " + version);
+                    Log.d(TAG, "Database version loaded: " + version);
+                } else {
+                    txtDbVersion.setText("Database Version: not found");
+                    logErrorToFile("Database version node not found in DB");
+                }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 txtDbVersion.setText("Database Version: Error");
+                logErrorToFile("Failed to load database version: " + error.getMessage());
+                Log.e(TAG, "Failed to load database version", error.toException());
             }
         });
+    }
+
+    private void logErrorToFile(String message) {
+        try {
+            File logDir = requireContext().getFilesDir(); // same internal storage folder
+            File logFile = new File(logDir, "firebase_errors.log");
+            FileWriter writer = new FileWriter(logFile, true);
+            writer.append(System.currentTimeMillis() + " : " + message + "\n");
+            writer.close();
+            Log.d(TAG, "Logged to file: " + logFile.getAbsolutePath());
+        } catch (IOException e) {
+            Log.e(TAG, "Failed to log error to file", e);
+        }
     }
 
     @Override
