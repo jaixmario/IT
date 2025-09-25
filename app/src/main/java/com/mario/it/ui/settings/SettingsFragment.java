@@ -96,15 +96,14 @@ public class SettingsFragment extends Fragment {
                     Log.d(TAG, "App version loaded: " + version);
                 } else {
                     txtAppVersion.setText("App Version: not found");
-                    logErrorToFile("App version node not found in DB");
+                    logError("App version node not found in DB");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 txtAppVersion.setText("App Version: Error");
-                logErrorToFile("Failed to load app version: " + error.getMessage());
-                Log.e(TAG, "Failed to load app version", error.toException());
+                logError("Failed to load app version: " + error.getMessage());
             }
         });
 
@@ -118,31 +117,37 @@ public class SettingsFragment extends Fragment {
                     Log.d(TAG, "Database version loaded: " + version);
                 } else {
                     txtDbVersion.setText("Database Version: not found");
-                    logErrorToFile("Database version node not found in DB");
+                    logError("Database version node not found in DB");
                 }
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
                 txtDbVersion.setText("Database Version: Error");
-                logErrorToFile("Failed to load database version: " + error.getMessage());
-                Log.e(TAG, "Failed to load database version", error.toException());
+                logError("Failed to load database version: " + error.getMessage());
             }
         });
     }
 
-    private void logErrorToFile(String message) {
+    private void logError(String message) {
+        // ✅ Show immediately in Toast
+        Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+
+        // ✅ Log to Logcat
+        Log.e(TAG, message);
+
+        // ✅ Also try writing to external files directory
         try {
-            // Save to external files dir (same place as crash logger)
             File logFile = new File(requireContext().getExternalFilesDir(null), "firebase_errors.log");
             FileWriter writer = new FileWriter(logFile, true);
-            writer.append("=== Firebase Log at " + System.currentTimeMillis() + " ===\n");
+            writer.append("=== Firebase Log at ").append(String.valueOf(System.currentTimeMillis())).append(" ===\n");
             writer.append(message).append("\n\n");
             writer.close();
 
             Log.d(TAG, "Logged to file: " + logFile.getAbsolutePath());
         } catch (IOException e) {
             Log.e(TAG, "Failed to log error to file", e);
+            Toast.makeText(getContext(), "File log failed: " + e.getMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
