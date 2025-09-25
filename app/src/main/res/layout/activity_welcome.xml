@@ -43,7 +43,7 @@
     <!-- Save button -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnSave"
-        style="@style/Widget.MaterialComponents.Button.FilledTonalButton"
+        style="@style/Widget.MaterialComponents.Button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Save &amp; Continue"
